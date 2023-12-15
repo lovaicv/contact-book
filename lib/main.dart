@@ -4,6 +4,7 @@ import 'package:contacts/pages/landing/landing_page.dart';
 import 'package:contacts/pages/landing/landing_page_controller.dart';
 import 'package:contacts/pages/login/login_page.dart';
 import 'package:contacts/pages/login/login_page_controller.dart';
+import 'package:contacts/services/api_service.dart';
 import 'package:contacts/services/lang/translation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         // Get.put(UserDb(hive: Hive));
         // Get.put(VideoDb(hive: Hive));
         // Get.put(BottomTabDb(hive: Hive));
-        // Get.put(ApiService(userDb: Get.find()));
+        Get.put(ApiService());
         // Get.put(RemoteConfigService());
         // Get.put(ShareService());
         // Get.put(DarkModeService());
@@ -85,11 +86,11 @@ class MyApp extends StatelessWidget {
           page: () => LandingPage(),
           binding: BindingsBuilder(() {
             Get.put(LandingPageController(
-                //     apiService: Get.find(),
-                //     remoteConfigService: Get.find(),
-                //     // localizationService: Get.find(),
-                //     bottomTabDb: Get.find(),
-                ));
+              apiService: Get.find(),
+              //     remoteConfigService: Get.find(),
+              //     // localizationService: Get.find(),
+              //     bottomTabDb: Get.find(),
+            ));
             // Get.put(HomePageController(apiService: Get.find(), localizationService: Get.find(),));
             // Get.put(VideoPageController());
             // Get.put(PodcastPageController());

@@ -1,7 +1,7 @@
 class ContactsResponseModel {
   bool? success;
   Status? status;
-  List<Data>? data;
+  List<ContactsDataModel>? data;
 
   ContactsResponseModel({this.success, this.status, this.data});
 
@@ -9,9 +9,9 @@ class ContactsResponseModel {
     success = json['success'];
     status = json['status'] != null ? new Status.fromJson(json['status']) : null;
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ContactsDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new ContactsDataModel.fromJson(v));
       });
     }
   }
@@ -48,14 +48,15 @@ class Status {
   }
 }
 
-class Data {
+class ContactsDataModel {
   String? id;
+  String? shortName;
   String? name;
   String? email;
 
-  Data({this.id, this.name, this.email});
+  ContactsDataModel({this.id, this.name, this.email});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ContactsDataModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];

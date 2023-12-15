@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:contacts/core/app_url.dart';
@@ -19,7 +20,7 @@ class ApiService extends GetxService {
   }
 
   initApiService() {
-    // dio.options.baseUrl = F.baseUrl;
+    dio.options.baseUrl = AppUrl.baseUrl;
     dio.options.connectTimeout = Duration(seconds: timeout);
     dio.options.receiveTimeout = Duration(seconds: timeout);
     dio.interceptors.add(LogInterceptor(
@@ -137,7 +138,7 @@ class ApiService extends GetxService {
     try {
       final response = await dio.get(AppUrl.getAllContacts);
       if (response.statusCode == 200) {
-        return ContactsResponseModel.fromJson(response.data);
+        return ContactsResponseModel.fromJson(jsonDecode(response.data));
       } else {
         DioException dioError = DioException(requestOptions: RequestOptions(path: response.requestOptions.path));
         dioError.response?.statusCode = response.statusCode;

@@ -10,6 +10,8 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get/get.dart';
 
 class LoginPage extends GetView<LoginPageController> {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +23,14 @@ class LoginPage extends GetView<LoginPageController> {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                AppColor.white,
-                AppColor.blueCEEFFE,
-                AppColor.white,
+                Colors.blue.shade100,
+                Colors.blue.shade200,
+                Colors.blue.shade100,
               ],
             ),
           ),
           child: Container(
-            margin: EdgeInsets.all(16),
+            margin: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -41,54 +43,54 @@ class LoginPage extends GetView<LoginPageController> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.4),
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
                           //     border: Border.all(color: Colors.white, width: 2)
                         ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 56),
+                      padding: const EdgeInsets.symmetric(vertical: 56),
                       height: 240,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)), border: Border.all(color: Colors.white, width: 2)),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)), border: Border.all(color: Colors.white, width: 2)),
                       child: Image.asset(AppImage.flutter),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppString.loginTitle.tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     )),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppString.loginMessage.tr,
                     )),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Container(
                     color: Colors.white,
                     child: TextField(
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 16),
+                        contentPadding: const EdgeInsets.only(left: 16),
                         hintText: AppString.username.tr,
                       ),
                     )),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   color: Colors.white,
                   child: Obx(() => TextField(
                         textAlignVertical: TextAlignVertical.center,
                         obscureText: controller.isShowPassword.value,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 16),
+                          contentPadding: const EdgeInsets.only(left: 16),
                           hintText: AppString.password.tr,
                           suffixIcon: IconButton(
                             onPressed: () {
@@ -99,19 +101,19 @@ class LoginPage extends GetView<LoginPageController> {
                         ),
                       )),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   alignment: Alignment.centerRight,
                   child: Text(
                     AppString.forgotPassword.tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Container(
+                const SizedBox(height: 10),
+                SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
