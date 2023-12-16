@@ -142,7 +142,7 @@ class LandingPage extends GetView<LandingPageController> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: ElevatedButton(
                       onPressed: () {
                         Get.toNamed(AppRoutes.customWidget, arguments: {

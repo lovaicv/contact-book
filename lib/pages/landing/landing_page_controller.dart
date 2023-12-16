@@ -30,6 +30,8 @@ class LandingPageController extends GetxController {
         List<String>? a = element.name?.split(' ');
         if (a != null && a.length > 1) {
           element.shortName = a[0].substring(0, 1) + a[1].substring(0, 1);
+        } else if (a != null) {
+          element.shortName = a[0].substring(0, 1);
         }
       }
       oriContacts.addAll(response.data!);

@@ -13,106 +13,121 @@ class CustomWidgetPage extends StatelessWidget {
   Widget build(BuildContext context) {
     dynamic arguments = ModalRoute.of(context)!.settings.arguments;
     List<ProspectModel> data = arguments['data'];
+    double height = arguments['height'];
+    return Scaffold(
+        body: CustomWidget(
+      data: data,
+      height: height,
+    ));
+  }
+}
+
+class CustomWidget extends StatelessWidget {
+  final List<ProspectModel> data;
+  final double height;
+
+  @override
+  const CustomWidget({super.key, required this.data, required this.height});
+
+  @override
+  Widget build(BuildContext context) {
     int total = 0;
     for (var element in data) {
       total += element.amount!;
     }
-    double height = arguments['height'];
-    return Scaffold(
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.all(16),
-          child: Material(
-              elevation: 5,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    AppString.prospectByStatus.tr,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        // color: Colors.green,
-                        width: height,
-                        height: height,
-                        margin: const EdgeInsets.only(top: 18),
-                        child: CustomPaint(
-                          painter: _MultipleColorCirclePainter(
-                            data: data,
-                            height: height / 2,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '$total',
-                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                AppString.totalProspects.tr,
-                                style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
-                              ),
-                            ],
-                          ),
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(16),
+        child: Material(
+            elevation: 5,
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  AppString.prospectByStatus.tr,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      // color: Colors.green,
+                      width: height,
+                      height: height,
+                      margin: const EdgeInsets.only(top: 18),
+                      child: CustomPaint(
+                        painter: _MultipleColorCirclePainter(
+                          data: data,
+                          height: height / 2,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '$total',
+                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              AppString.totalProspects.tr,
+                              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                            ),
+                          ],
                         ),
                       ),
-                      const Expanded(child: SizedBox()),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: data
-                            .map((e) => Container(
-                                  margin: const EdgeInsets.only(bottom: 5),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 10,
-                                        width: 10,
-                                        decoration: BoxDecoration(
-                                          color: e.color,
-                                          shape: BoxShape.circle,
-                                        ),
+                    ),
+                    const Expanded(child: SizedBox()),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: data
+                          .map((e) => Container(
+                                margin: const EdgeInsets.only(bottom: 5),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 10,
+                                      width: 10,
+                                      decoration: BoxDecoration(
+                                        color: e.color,
+                                        shape: BoxShape.circle,
                                       ),
-                                      const SizedBox(width: 5),
-                                      Text('${e.name}'),
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                      const Expanded(child: SizedBox()),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: data
-                            .map((e) => Container(
-                                  margin: const EdgeInsets.only(bottom: 5),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        '${e.amount}',
-                                        style: const TextStyle(fontWeight: FontWeight.w500),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        '${(e.amount! / total * 100).round()}%',
-                                        style: TextStyle(color: Colors.grey.shade600),
-                                      ),
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    ],
-                  ),
-                ]),
-              )),
-        ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text('${e.name}'),
+                                  ],
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                    const Expanded(child: SizedBox()),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: data
+                          .map((e) => Container(
+                                margin: const EdgeInsets.only(bottom: 5),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '${e.amount}',
+                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '${(e.amount! / total * 100).round()}%',
+                                      style: TextStyle(color: Colors.grey.shade600),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  ],
+                ),
+              ]),
+            )),
       ),
     );
   }

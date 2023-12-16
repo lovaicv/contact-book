@@ -1,8 +1,8 @@
 // import 'package:flutter/foundation.dart';
 // import 'package:flutter/material.dart';
 //
-// //todo businesslogic and ui should be separate
-// //todo use of bloc and setState together?
+// //todo business logic and ui should be separate
+// //todo use of bloc and setState together? suggest only use one or just use bloc for better code readability
 // class OnboardingOtpScreen extends StatefulWidget {
 //   OnboardingOtpScreen(
 //       {Key? key,
@@ -37,9 +37,9 @@
 //   late UserBloc _userBloc;
 //   late OTPBloc _otpBloc;
 //   late SendOTPBean _sendOTPBean;
-//   SentOTPBean? _sentOTPBean;//todo why no use of late like the other? possible null at line 93
+//   SentOTPBean? _sentOTPBean;//todo why no use of late like the other? possible null at line 93, use late to avoid null
 //   late String errorText;
-//   String? activationErrorText;//todo unused variable
+//   String? activationErrorText;//todo unused variable, remove it
 //   late OtpFieldController _otpFieldController;
 //   bool countingDown = false;
 //
@@ -64,20 +64,20 @@
 //
 //   _initSendOtp() async {
 //     //TODO: Currently By Pass OTP, OTP Integration Testing Successful. Uncomment this before compile
-//     //todo not sure what is the uncomment/comment about, but should use conditional function instead of doing this manually
+//     //todo not sure what is the uncomment/comment about, suggest use conditional function instead of doing this manually
 //     final loadingDialog = ViewBloc.showLoadingDialog(context, "${mtl("otpSending")}${StringUtil.maskString(widget.mobileNo)}");
 //     dynamic result = await _otpBloc.sendOtp(_sendOTPBean);
-//     await Future.delayed(const Duration(milliseconds: 80));//todo unnecessary delayed, i guess purpose is to make sure it is not hitting dialog error on UI building process
+//     await Future.delayed(const Duration(milliseconds: 80));//todo unnecessary delayed, use addPostFrameCallback
 //     loadingDialog.dismiss(() {});
 //     // If OTP sent successful, it will return SentOTPBean else it's a error message
 //     if (result.runtimeType == SentOTPBean) {
 //       _sentOTPBean = result;
-//       setState(() {//todo go to bloc
+//       setState(() {//todo use bloc
 //         countingDown = true;
 //         errorText = "";//todo no proper error handling, error message is just empty
 //       });
 //     } else {
-//       setState(() {//todo go to bloc
+//       setState(() {//todo use bloc
 //         errorText = result.toString();
 //       });
 //     }
@@ -92,7 +92,7 @@
 //       verifyResult = await _otpBloc.verifyOtp(
 //           otpValue, _sendOTPBean.userId, _sentOTPBean ?? SentOTPBean(otpRefNo: "", resendIntervalInMins: 0, otpMaxReattempt: 0), context,
 //           (errMsg) {
-//         setState(() {//todo go to bloc
+//         setState(() {//todo use bloc
 //           errorText = errMsg;
 //         });
 //       });
@@ -209,13 +209,13 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     //todo use of bloc but without blocProvider/BlocBuilder here?
+//     //todo use of bloc but without blocProvider/BlocBuilder here? use blocProvider/BlocBuilder
 //     return WillPopScope(
 //       onWillPop: () async {
 //         return await showTerminateDialog();
 //       },
 //       child: AnnotatedRegion<SystemUiOverlayStyle>(
-//           value: SystemUiOverlayStyle.dark,//todo always dark mode?
+//           value: SystemUiOverlayStyle.dark,//todo always dark mode? use theme in materialApp
 //           child: Scaffold(
 //             backgroundColor: AppColors.BackgroundWhite,//todo inconsistent color references, there is no usage of AppColors anywhere in this code
 //             body: Column(
@@ -251,7 +251,7 @@
 //                           const Divider(height: 16),
 //                           Text(mtl("otpDesc"), style: uiTheme.font(size: 16, colorPair: greyTwo)),
 //                           const Divider(height: 30),
-//                           Text(isNullOrEmpty(errorText) ? "" : errorText, style: uiTheme.font(size: 14, colorPair: red)),//todo can use extension method
+//                           Text(isNullOrEmpty(errorText) ? "" : errorText, style: uiTheme.font(size: 14, colorPair: red)),//todo isNullOrEmpty can replace with extension method
 //                           const Divider(height: 8),
 //                           OtpField(
 //                             otpFieldController: _otpFieldController,
@@ -264,7 +264,7 @@
 //                           const Divider(height: 30),
 //                           Align(
 //                             alignment: Alignment.center,
-//                             child: RichText(//todo why use richtext when you only has 1 textspan?
+//                             child: RichText(//todo unnecessary richtext, why use richtext when you only has 1 textspan? replace with text with gestureDetector
 //                               textAlign: TextAlign.center,
 //                               text: TextSpan(
 //                                 text: '${mtl("otpDidNotGetCode")}  ',
@@ -297,7 +297,7 @@
 //                                     seconds: 305,
 //                                     onFinished: () {
 //                                       countingDown = false;
-//                                       setState(() {});//todo go to bloc
+//                                       setState(() {});//todo use bloc
 //                                     },
 //                                   ),
 //                                 ],
