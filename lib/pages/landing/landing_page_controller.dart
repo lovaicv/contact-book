@@ -1,6 +1,5 @@
 import 'package:contacts/models/contacts_response_model.dart';
 import 'package:contacts/services/api_service.dart';
-import 'package:contacts/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,8 +8,9 @@ class LandingPageController extends GetxController {
 
   final ApiService apiService;
   List<ContactsDataModel> oriContacts = [];
-  RxList filteredContacts = [].obs;
+  RxList<ContactsDataModel> filteredContacts = <ContactsDataModel>[].obs;
   TextEditingController searchController = TextEditingController();
+  RxBool isLoading = true.obs;
 
   @override
   void onInit() {
@@ -20,6 +20,7 @@ class LandingPageController extends GetxController {
 
   getAllContacts() async {
     ContactsResponseModel response = await apiService.getContacts();
+    isLoading.value = false;
     if (response.success != null &&
         response.success! &&
         response.status != null &&
@@ -35,12 +36,35 @@ class LandingPageController extends GetxController {
       oriContacts.sort((a, b) => a.name!.compareTo(b.name!));
       filteredContacts.addAll(oriContacts);
     }
-    showLog('response $response');
   }
 
   clearSearch() {
     searchController.text = '';
     filteredContacts.clear();
     filteredContacts.addAll(oriContacts);
+  }
+
+  search(String searchText) {
+    searchText = searchText.toLowerCase();
+    filteredContacts.clear();
+    filteredContacts
+        .addAll(oriContacts.where((p0) => p0.name!.toLowerCase().contains(searchText) || p0.email!.toLowerCase().contains(searchText)));
+  }
+
+  highlight(String whichField, TextStyle textStyle) {
+    final matches = searchController.text.allMatches(whichField.toLowerCase()).toList();
+    List<TextSpan> nameSpan = [];
+    if (matches.isEmpty) {
+      nameSpan.add(TextSpan(text: whichField));
+    } else {
+      for (var i = 0; i < matches.length; i++) {
+        final strStart = i == 0 ? 0 : matches[i - 1].end;
+        final match = matches[i];
+        nameSpan.add(TextSpan(text: whichField.substring(strStart, match.start)));
+        nameSpan.add(TextSpan(text: whichField.substring(match.start, match.end), style: const TextStyle(color: Colors.blue)));
+      }
+      nameSpan.add(TextSpan(text: whichField.substring(matches.last.end)));
+    }
+    return RichText(text: TextSpan(style: textStyle, children: nameSpan));
   }
 }

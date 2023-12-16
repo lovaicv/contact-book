@@ -7,20 +7,20 @@ class ContactsResponseModel {
 
   ContactsResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    status = json['status'] != null ? new Status.fromJson(json['status']) : null;
+    status = json['status'] != null ? Status.fromJson(json['status']) : null;
     if (json['data'] != null) {
       data = <ContactsDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new ContactsDataModel.fromJson(v));
+        data!.add(ContactsDataModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    if (this.status != null) {
-      data['status'] = this.status!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    if (status != null) {
+      data['status'] = status!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -41,9 +41,9 @@ class Status {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['message'] = message;
     return data;
   }
 }
@@ -63,10 +63,10 @@ class ContactsDataModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
     return data;
   }
 }

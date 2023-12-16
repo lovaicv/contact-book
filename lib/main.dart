@@ -1,5 +1,6 @@
 import 'package:contacts/core/app_routes.dart';
 import 'package:contacts/core/app_strings.dart';
+import 'package:contacts/pages/custom_widget/custom_widget_page.dart';
 import 'package:contacts/pages/landing/landing_page.dart';
 import 'package:contacts/pages/landing/landing_page_controller.dart';
 import 'package:contacts/pages/login/login_page.dart';
@@ -96,11 +97,11 @@ class MyApp extends StatelessWidget {
             // Get.put(PodcastPageController());
           }),
         ),
-        // GetPage(
-        //   name: AppRoutes.webViewArticle,
-        //   page: () => const WebViewArticlePage(),
-        //   binding: BindingsBuilder(() {}),
-        // ),
+        GetPage(
+          name: AppRoutes.customWidget,
+          page: () => const CustomWidgetPage(),
+          binding: BindingsBuilder(() {}),
+        ),
         // GetPage(
         //   name: AppRoutes.webViewArticleNative,
         //   page: () => const WebViewArticleNativePage(),

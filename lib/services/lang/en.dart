@@ -7,4 +7,12 @@ Map<String, String> en = {
   'loginTitle': 'Welcome To Flutter',
   'loginMessage': 'Please enter your details to continue',
   'forgotPassword': 'Forgot Password?',
+  'search': 'Search...',
+  'noSearchResult': 'no search result',
+  'customWidget': 'Custom Widget',
+  'prospectByStatus': 'Prospect by Status',
+  'totalProspects': 'Total Prospects',
+  'cold': 'Cold',
+  'warm': 'Warm',
+  'hot': 'Hot',
 };

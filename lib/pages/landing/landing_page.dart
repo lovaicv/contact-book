@@ -1,5 +1,7 @@
+import 'package:contacts/core/app_routes.dart';
 import 'package:contacts/core/app_strings.dart';
 import 'package:contacts/models/contacts_response_model.dart';
+import 'package:contacts/models/prospect_model.dart';
 import 'package:contacts/pages/landing/landing_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
@@ -14,94 +16,146 @@ class LandingPage extends GetView<LandingPageController> {
       body: Container(
         color: Colors.grey.shade200,
         child: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              Container(
-                color: Colors.white,
-                child: Obx(() => TextField(
-                      controller: controller.searchController,
-                      textAlignVertical: TextAlignVertical.center,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(left: 16),
-                        hintText: AppString.password.tr,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            controller.clearSearch();
-                          },
-                          icon: Icon(Foundation.x_circle),
-                        ),
+              Column(
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade100,
+                        borderRadius: const BorderRadius.all(Radius.circular(40)),
                       ),
-                    )),
-              ),
-              SizedBox(height: 16),
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  AppString.appName.tr,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Obx(() => ListView.separated(
-                    padding: EdgeInsets.all(16),
-                    itemBuilder: (BuildContext context, int index) {
-                      ContactsDataModel contact = controller.filteredContacts[index];
-                      return Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                      margin: const EdgeInsets.all(16),
+                      child: TextField(
+                        controller: controller.searchController,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.only(left: 16),
+                          hintText: AppString.search.tr,
+                          prefixIcon: const Icon(
+                            Feather.search,
+                            color: Colors.grey,
                           ),
-                          padding: EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              Material(
-                                elevation: 2,
-                                shape: CircleBorder(),
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.pink.shade100,
-                                    border: Border.all(color: Colors.white, width: 2),
-                                  ),
-                                  child: Text(
-                                    '${contact.shortName}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${contact.name}',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text('${contact.email}'),
-                                ],
-                              ),
-                            ],
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              controller.clearSearch();
+                            },
+                            icon: const Icon(
+                              Foundation.x_circle,
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 10,
-                      );
-                    },
-                    itemCount: controller.filteredContacts.length)),
+                        onChanged: (string) {
+                          controller.search(string);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      AppString.appName.tr,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Obx(() => controller.isLoading.value
+                        ? const Center(child: CircularProgressIndicator())
+                        : controller.filteredContacts.isEmpty
+                            ? Center(child: Text(AppString.noSearchResult.tr))
+                            : ListView.separated(
+                                padding: const EdgeInsets.all(16),
+                                itemBuilder: (BuildContext context, int index) {
+                                  ContactsDataModel contact = controller.filteredContacts[index];
+                                  return Material(
+                                    elevation: 2,
+                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      ),
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          Material(
+                                            elevation: 2,
+                                            shape: const CircleBorder(),
+                                            child: Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.pink.shade100,
+                                                border: Border.all(color: Colors.white, width: 2),
+                                              ),
+                                              child: Text(
+                                                '${contact.shortName}',
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              controller.highlight(
+                                                  contact.name!,
+                                                  const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  )),
+                                              controller.highlight(
+                                                  contact.email!,
+                                                  const TextStyle(
+                                                    color: Colors.black,
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (BuildContext context, int index) {
+                                  return const SizedBox(
+                                    height: 10,
+                                  );
+                                },
+                                itemCount: controller.filteredContacts.length)),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.customWidget, arguments: {
+                          'data': [
+                            ProspectModel(AppString.cold.tr, 40, Colors.blue),
+                            ProspectModel(AppString.hot.tr, 80, Colors.red),
+                            ProspectModel(AppString.warm.tr, 40, Colors.orange),
+                          ],
+                          'height': 130.0
+                        });
+                      },
+                      child: Text(AppString.customWidget.tr)),
+                ),
               ),
             ],
           ),
