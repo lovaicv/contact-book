@@ -15,4 +15,6 @@ Map<String, String> en = {
   'cold': 'Cold',
   'warm': 'Warm',
   'hot': 'Hot',
+  'usernameError': 'Please enter user name',
+  'passwordError': 'Please enter password',
 };

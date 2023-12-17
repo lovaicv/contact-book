@@ -11,14 +11,17 @@ class CustomWidgetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic arguments = ModalRoute.of(context)!.settings.arguments;
-    List<ProspectModel> data = arguments['data'];
-    double height = arguments['height'];
     return Scaffold(
-        body: CustomWidget(
-      data: data,
-      height: height,
-    ));
+        appBar: AppBar(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          title: Text(AppString.customWidget.tr),
+        ),
+        body: CustomWidget(data: [
+          ProspectModel(AppString.cold.tr, 40, Colors.blue),
+          ProspectModel(AppString.hot.tr, 80, Colors.red),
+          ProspectModel(AppString.warm.tr, 40, Colors.orange),
+        ], height: 130.0));
   }
 }
 
@@ -150,7 +153,6 @@ class _MultipleColorCirclePainter extends CustomPainter {
     double radianStart = 0;
     double radianLength = 0;
     int allOccurrences = 0;
-    //set denominator
     for (var element in data) {
       allOccurrences += element.amount!;
     }

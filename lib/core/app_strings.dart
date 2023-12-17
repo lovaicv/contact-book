@@ -16,4 +16,6 @@ class AppString {
   static const cold = 'cold';
   static const warm = 'warm';
   static const hot = 'hot';
+  static const usernameError = 'usernameError';
+  static const passwordError = 'passwordError';
 }

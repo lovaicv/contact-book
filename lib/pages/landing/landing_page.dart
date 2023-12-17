@@ -1,7 +1,6 @@
 import 'package:contacts/core/app_routes.dart';
 import 'package:contacts/core/app_strings.dart';
 import 'package:contacts/models/contacts_response_model.dart';
-import 'package:contacts/models/prospect_model.dart';
 import 'package:contacts/pages/landing/landing_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
@@ -13,52 +12,54 @@ class LandingPage extends GetView<LandingPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.grey.shade200,
-        child: SafeArea(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Container(
+          color: Colors.grey.shade200,
           child: Stack(
             children: [
               Column(
                 children: [
-                  Container(
-                    color: Colors.white,
+                  SafeArea(
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade100,
-                        borderRadius: const BorderRadius.all(Radius.circular(40)),
-                      ),
-                      margin: const EdgeInsets.all(16),
-                      child: TextField(
-                        controller: controller.searchController,
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(left: 16),
-                          hintText: AppString.search.tr,
-                          prefixIcon: const Icon(
-                            Feather.search,
-                            color: Colors.grey,
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              controller.clearSearch();
-                            },
-                            icon: const Icon(
-                              Foundation.x_circle,
+                      color: Colors.white,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade100,
+                          borderRadius: const BorderRadius.all(Radius.circular(40)),
+                        ),
+                        margin: const EdgeInsets.all(16),
+                        child: TextField(
+                          controller: controller.searchController,
+                          textAlignVertical: TextAlignVertical.center,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.only(left: 16),
+                            hintText: AppString.search.tr,
+                            prefixIcon: const Icon(
+                              Feather.search,
                               color: Colors.grey,
                             ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                controller.clearSearch();
+                              },
+                              icon: const Icon(
+                                Foundation.x_circle,
+                                color: Colors.grey,
+                              ),
+                            ),
                           ),
+                          onChanged: (string) {
+                            controller.search(string);
+                          },
                         ),
-                        onChanged: (string) {
-                          controller.search(string);
-                        },
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
                   Container(
                     alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(16),
                     child: Text(
                       AppString.appName.tr,
                       style: const TextStyle(
@@ -73,17 +74,14 @@ class LandingPage extends GetView<LandingPageController> {
                         : controller.filteredContacts.isEmpty
                             ? Center(child: Text(AppString.noSearchResult.tr))
                             : ListView.separated(
-                                padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                                 itemBuilder: (BuildContext context, int index) {
                                   ContactsDataModel contact = controller.filteredContacts[index];
                                   return Material(
                                     elevation: 2,
+                                    color: Colors.white,
                                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                                     child: Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                      ),
                                       padding: const EdgeInsets.all(16),
                                       child: Row(
                                         children: [
@@ -145,14 +143,7 @@ class LandingPage extends GetView<LandingPageController> {
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: ElevatedButton(
                       onPressed: () {
-                        Get.toNamed(AppRoutes.customWidget, arguments: {
-                          'data': [
-                            ProspectModel(AppString.cold.tr, 40, Colors.blue),
-                            ProspectModel(AppString.hot.tr, 80, Colors.red),
-                            ProspectModel(AppString.warm.tr, 40, Colors.orange),
-                          ],
-                          'height': 130.0
-                        });
+                        Get.toNamed(AppRoutes.customWidget);
                       },
                       child: Text(AppString.customWidget.tr)),
                 ),
