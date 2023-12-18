@@ -1,5 +1,10 @@
 # Contacts
 
+some informations
+1. built using Flutter version 3.13.0
+2. sample [apk-release.apk](https://github.com/lovaicv/contact-book/blob/master/app-release.apk)
+3. question 4 code_review here [lib/code_review.dart](https://github.com/lovaicv/contact-book/blob/master/lib/code_review.dart)
+
 1 UI/Presentation</br>
   ✅ login</br>
   ✅ contacts list </br>
