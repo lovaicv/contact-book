@@ -3,6 +3,8 @@
 //
 // //todo business logic and ui should be separate
 // //todo use of bloc and setState together? suggest only use one or just use bloc for better code readability
+// //todo try to add comment (//) documentary (///) for each function for better explanation
+// //todo OnboardingOtpScreen is a screen for user to wait for their OTP after user insert their phone number (previous screen)
 // class OnboardingOtpScreen extends StatefulWidget {
 //   OnboardingOtpScreen(
 //       {Key? key,
@@ -21,12 +23,12 @@
 //   String password;
 //
 //   // For Login
-//   UserProfileBean? userProfileBean;
+//   UserProfileBean? userProfileBean;//todo data class
 //
 //   // For Registration
-//   RegistrationBean? registrationBean;
-//   OtpOption option;
-//   OtpVerifyPurpose otpVerifyPurpose;
+//   RegistrationBean? registrationBean;//todo data class
+//   OtpOption option;//todo data class
+//   OtpVerifyPurpose otpVerifyPurpose;//todo data class
 //
 //   @override
 //   State<OnboardingOtpScreen> createState() => _OnboardingOtpScreenState();
@@ -37,7 +39,7 @@
 //   late UserBloc _userBloc;
 //   late OTPBloc _otpBloc;
 //   late SendOTPBean _sendOTPBean;
-//   SentOTPBean? _sentOTPBean;//todo why no use of late like the other? possible null at line 93, use late to avoid null
+//   SentOTPBean? _sentOTPBean;//todo possible null at line 98
 //   late String errorText;
 //   String? activationErrorText;//todo unused variable, remove it
 //   late OtpFieldController _otpFieldController;
@@ -47,14 +49,14 @@
 //   void initState() {
 //     super.initState();
 //     errorText = "";
-//     _registrationBloc = RegistrationBloc();
-//     _otpBloc = OTPBloc();
-//     _userBloc = UserBloc();
+//     //todo are RegistrationBloc, OTPBloc, UserBloc already instantiate elsewhere? if yes just call the bloc via BlocProvider.of<XXX>(context)
+//     _registrationBloc = RegistrationBloc();//todo combine multiple together using MultiBlocProvider/MultiBlocListener, put it in build method
+//     _otpBloc = OTPBloc();//todo combine multiple together using MultiBlocProvider/MultiBlocListener, put it in build method
+//     _userBloc = UserBloc();//todo combine multiple together using MultiBlocProvider/MultiBlocListener, put it in build method
 //     _otpFieldController = OtpFieldController(onVerify: (otpValue) {
 //       verifyOTP(otpValue);
 //     });
 //     _sendOTPBean = SendOTPBean(mobileNo: widget.mobileNo, userId: widget.userId, option: widget.option.optionName, email: widget.email);
-//
 //     if (kReleaseMode) {
 //       WidgetsBinding.instance.addPostFrameCallback((_) async {
 //         _initSendOtp();
@@ -62,6 +64,7 @@
 //     }
 //   }
 //
+//   //todo create a new bloc for this page called OTPScreenBloc, example in build
 //   _initSendOtp() async {
 //     //TODO: Currently By Pass OTP, OTP Integration Testing Successful. Uncomment this before compile
 //     //todo not sure what is the uncomment/comment about, suggest use conditional function instead of doing this manually
@@ -74,7 +77,7 @@
 //       _sentOTPBean = result;
 //       setState(() {//todo use bloc
 //         countingDown = true;
-//         errorText = "";//todo no proper error handling, error message is just empty
+//         errorText = "";
 //       });
 //     } else {
 //       setState(() {//todo use bloc
@@ -83,12 +86,14 @@
 //     }
 //   }
 //
+//   //todo use bloc and emit event, bloc state contain errorText, countingDown
 // // In debug mode, no OTP is required.
 //   Future<void> verifyOTP(String otpValue) async {
 //     bool verifyResult = true;
 // // If it's in release mode, this should be execute to verify the OTP
 //     if (kReleaseMode) {
 //       final loadingDialog = ViewBloc.showLoadingDialog(context, mtl("otpVerifying"));
+//       //todo if _sentOTPBean is null, SentOTPBean is default value and the result will always be false?
 //       verifyResult = await _otpBloc.verifyOtp(
 //           otpValue, _sendOTPBean.userId, _sentOTPBean ?? SentOTPBean(otpRefNo: "", resendIntervalInMins: 0, otpMaxReattempt: 0), context,
 //           (errMsg) {
@@ -118,12 +123,14 @@
 //     }
 //   }
 //
+//   //todo should be inside bloc and emit event
 //   Future<void> processForRegistration() async {
 //     bool isCustomer = widget.registrationBean?.isCustomer ?? false;
 //     if (!isCustomer) {
 //       final result = await _registrationBloc.sendValidationEmail(_sendOTPBean.userId, _sendOTPBean.email ?? "", context);
 //       if (result) {
-//         final completed = await ViewBloc.showAlertDialog(context,
+//         //todo show alert dialog and pop result later might just close the alert dialog?
+//         final completed = await ViewBloc.showAlertDialog(context,//todo showAlertDialog can be put inside bloc listener
 //             title: "${mtl("verifyEmailSuccess")} ${_sendOTPBean.email ?? ""}\n${mtl("verifyEmailSuccess2")}",
 //             illustration: loadSvg("pictogram/email.svg", color: null),
 //             positiveText: mtl("okButton"), onPressedPositive: () {
@@ -157,6 +164,7 @@
 //     }
 //   }
 //
+//   //todo should be inside bloc and emit event
 //   Future<void> processForFirstTimeLogin() async {
 // //First time login, user will only be saved once OTP success
 //     UserProfileBean? userProfileBean = widget.userProfileBean;
@@ -180,6 +188,7 @@
 //     }
 //   }
 //
+//   //todo should be inside bloc and emit event
 //   Future<void> processForResetPassword() async {
 //     NUINavigator.popAndPush(
 //         context,
@@ -189,10 +198,12 @@
 //         ));
 //   }
 //
+//   //todo should be inside bloc and emit event
 //   Future<void> processForChangePassword() async {
 //     NUINavigator.popAndPush(context, NewPasswordScreen(isFirstStep: false, userId: widget.userId, inAppChangePassword: true));
 //   }
 //
+//   //todo should be inside bloc and emit event
 //   Future<bool> showTerminateDialog() async {
 //     final result = await ViewBloc.showAlertDialog(context,
 //         title: "${mtl("otpTerminateDialog")} ${widget.otpVerifyPurpose.name} ${mtl("otpTerminateDialog2")}",
@@ -210,6 +221,15 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     //todo use of bloc but without blocProvider/BlocBuilder here? use blocProvider/BlocBuilder
+//     //todo use MultiBlocListener/MultiBlocProvider here
+//     //   BlocProvider(
+//     //     create: (BuildContext context) => OTPScreenBloc(RegistrationBloc(),OTPBloc(),UserBloc())..add(SendOtpStart()),//todo on result emit event SendOtpResult
+//     //     child: BlocBuilder<OTPScreenBloc, OTPScreenState>(
+//     //       builder: (context, state) {
+//     //         return switch (state) {
+//     //              SendOtpResult() =>
+//     //             }
+//     //   )
 //     return WillPopScope(
 //       onWillPop: () async {
 //         return await showTerminateDialog();
